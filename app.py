@@ -44,9 +44,9 @@ def generar_gif(B0, frames=40):
         images.append(imageio.imread(buf))
         plt.close(fig)
 
-    # Guardar como GIF
+    # Guardar como GIF con loop infinito
     gif_buf = io.BytesIO()
-    imageio.mimsave(gif_buf, images, format="GIF", duration=0.2)
+    imageio.mimsave(gif_buf, images, format="GIF", duration=0.2, loop=0)  # 👈 loop=0 = infinito
     gif_buf.seek(0)
 
     return gif_buf, omega
@@ -73,7 +73,7 @@ if st.button("Start"):
         omega_vals = GAMMA * B_vals  # MHz
 
         fig2, ax2 = plt.subplots()
-        ax2.plot(B_vals, omega_vals, 'b-', label="ω = γ·B₀")
+        ax2.plot(B_vals, omega_vals, 'b-', label=f"ω = γ·B₀ (γ={GAMMA:.2f} MHz/T)")
         ax2.scatter([B0_1, B0_2], [omega1, omega2], color="red", zorder=5)
         ax2.set_xlabel("Campo magnético B₀ (Tesla)")
         ax2.set_ylabel("Frecuencia de precesión ω (MHz)")
@@ -85,5 +85,6 @@ if st.button("Start"):
 
     else:
         st.warning("Ingrese valores de B₀ mayores que 0 en ambos campos.")
+
 
 
